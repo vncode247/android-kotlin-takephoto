@@ -12,15 +12,16 @@ import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.facebook.common.util.UriUtil
+import com.facebook.drawee.view.SimpleDraweeView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     val CAMERA_REQUEST_CODE = 0
     lateinit var imageFilePath: String
+    @BindView(R.id.imgAvatar) lateinit var imgAvatar: SimpleDraweeView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +47,8 @@ class MainActivity : AppCompatActivity() {
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
                         AlertDialog.Builder(this@MainActivity)
-                                .setTitle("R.string.storage_permission_rationale_title")
-                                .setMessage("R.string.storage_permission_rationale_message")
+                                .setTitle("getString(R.string.storage_permission_rationale_title)")
+                                .setMessage("getString(R.string.storage_permission_rationale_message)")
                                 .setNegativeButton(android.R.string.cancel, DialogInterface.OnClickListener {
                                     dialogInterface, i ->
                                     dialogInterface.dismiss()
@@ -109,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     @Throws(IOException::class)
     fun createImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val imageFileName: String = "JPEG_" + timeStamp + "_"
         val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         if(!storageDir.exists()) storageDir.mkdirs()
