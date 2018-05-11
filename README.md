@@ -1,6 +1,12 @@
 # Android-Kotlin Take photo step by step
-### 1. Import library if not exists
+### 1. app/build.gradle
 ```.gradle
+apply plugin: 'kotlin-kapt'
+
+kapt {
+    generateStubs = true
+}
+
 // 
 implementation 'com.jakewharton:butterknife:8.8.1'
 kapt 'com.jakewharton:butterknife-compiler:8.8.1'
